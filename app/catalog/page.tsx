@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ProductCard } from "@/components/product-card";
+import { CatalogSearch } from "@/components/catalog-search";
 import { categoryLabel, products } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -20,11 +20,7 @@ export default function CatalogPage() {
           </Link>
         ))}
       </div>
-      <div className="mt-8 grid gap-5 md:grid-cols-3">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      <CatalogSearch products={products} />
     </main>
   );
 }

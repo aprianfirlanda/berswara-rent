@@ -8,6 +8,7 @@ const navItems = [
   { href: "/catalog", label: "Catalog" },
   { href: "/how-to-rent", label: "How to Rent" },
   { href: "/about", label: "About Us" },
+  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 

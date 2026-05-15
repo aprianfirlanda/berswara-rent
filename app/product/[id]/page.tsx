@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductGallery } from "@/components/product-gallery";
+import { AvailabilityCalendar } from "@/components/availability-calendar";
 import { categoryLabel, createWhatsAppLink, formatIdr, getProductById, products } from "@/lib/products";
 
 type Props = { params: Promise<{ id: string }> };
@@ -87,6 +88,7 @@ export default async function ProductPage({ params }: Props) {
           >
             Check Availability on WhatsApp
           </a>
+          <AvailabilityCalendar product={product} />
         </section>
       </div>
 

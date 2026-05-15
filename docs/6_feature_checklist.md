@@ -11,10 +11,10 @@
 - [x] SEO Optimized (Meta tags per product).
 
 ## 2. Phase 2: Enhanced Static
-- [ ] Search functionality (Local/Client-side search).
-- [ ] Availability Calendar (Read-only, manual update).
-- [ ] Advanced Media Lightbox/Zoom for products.
-- [ ] Blog/Articles for parenting tips & gear reviews.
+- [x] Search functionality (Local/Client-side search).
+- [x] Availability Calendar (Read-only, manual update).
+- [x] Advanced Media Lightbox/Zoom for products.
+- [x] Blog/Articles for parenting tips & gear reviews.
 
 ## 3. Phase 3: Dynamic Features (Future)
 - [ ] User Accounts (Wishlist, Rent history).

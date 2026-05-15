@@ -14,6 +14,11 @@ export type Product = {
   dimensions: string;
   availability: boolean;
   featured: boolean;
+  availabilityLastUpdated: string;
+  availabilityCalendar: Array<{
+    date: string;
+    status: "available" | "booked";
+  }>;
   photos: string[];
   videos: string[];
 };
@@ -40,6 +45,12 @@ export const products: Product[] = [
     dimensions: "45 x 23 x 54 cm (folded)",
     availability: true,
     featured: true,
+    availabilityLastUpdated: "2026-05-10",
+    availabilityCalendar: [
+      { date: "2026-05-18", status: "booked" },
+      { date: "2026-05-19", status: "booked" },
+      { date: "2026-05-24", status: "booked" },
+    ],
     photos: [
       "/images/products/bugaboo-1.svg",
       "/images/products/bugaboo-2.svg",
@@ -62,6 +73,12 @@ export const products: Product[] = [
     dimensions: "50 x 36 x 45 cm",
     availability: true,
     featured: true,
+    availabilityLastUpdated: "2026-05-11",
+    availabilityCalendar: [
+      { date: "2026-05-20", status: "booked" },
+      { date: "2026-05-21", status: "booked" },
+      { date: "2026-05-22", status: "booked" },
+    ],
     photos: [
       "/images/products/vtech-1.svg",
       "/images/products/vtech-2.svg",
@@ -84,6 +101,13 @@ export const products: Product[] = [
     dimensions: "34 x 31 x 59 cm (folded)",
     availability: false,
     featured: true,
+    availabilityLastUpdated: "2026-05-12",
+    availabilityCalendar: [
+      { date: "2026-05-16", status: "booked" },
+      { date: "2026-05-17", status: "booked" },
+      { date: "2026-05-18", status: "booked" },
+      { date: "2026-05-25", status: "booked" },
+    ],
     photos: [
       "/images/products/doona-1.svg",
       "/images/products/doona-2.svg",
@@ -112,4 +136,12 @@ export function getProductsByCategory(category: ProductCategory): Product[] {
 export function createWhatsAppLink(productName: string): string {
   const message = `Hi Berswara Rent, I'm interested in renting the ${productName}. Is it available for [Dates]?`;
   return `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`;
+}
+
+export function formatDate(dateString: string): string {
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(`${dateString}T00:00:00`));
 }
