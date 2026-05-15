@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f0fdf4"/>
+  <rect x="80" y="80" width="1040" height="540" rx="20" fill="#ffffff"/>
+  <text x="600" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="46" fill="#14532d">Sanitize • Inspect • Pack</text>
+  <text x="600" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#166534">Hygiene-first process for every rental item</text>
+</svg>

@@ -1,14 +1,14 @@
 # Feature Checklist: Berswara Rent
 
 ## 1. Phase 1: Static MVP (Current Focus)
-- [ ] Responsive Navigation (Mobile friendly).
-- [ ] Home Page with Hero and Featured Items.
-- [ ] Product Catalog with Category Filtering.
-- [ ] Static Product Detail Pages (SSG using Next.js).
-- [ ] **Multi-media Support:** Product gallery with multiple photos (static) and embedded videos (YouTube/External).
-- [ ] "Rent via WhatsApp" integration (Dynamic links).
-- [ ] Basic Hygiene/About Us section.
-- [ ] SEO Optimized (Meta tags per product).
+- [x] Responsive Navigation (Mobile friendly).
+- [x] Home Page with Hero and Featured Items.
+- [x] Product Catalog with Category Filtering.
+- [x] Static Product Detail Pages (SSG using Next.js).
+- [x] **Multi-media Support:** Product gallery with multiple photos (static) and embedded videos (YouTube/External).
+- [x] "Rent via WhatsApp" integration (Dynamic links).
+- [x] Basic Hygiene/About Us section.
+- [x] SEO Optimized (Meta tags per product).
 
 ## 2. Phase 2: Enhanced Static
 - [ ] Search functionality (Local/Client-side search).
