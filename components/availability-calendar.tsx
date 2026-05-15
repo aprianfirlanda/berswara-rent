@@ -23,10 +23,10 @@ export function AvailabilityCalendar({ product, locale }: Props) {
   );
 
   return (
-    <section className="rounded border border-slate-200 bg-white p-4">
+    <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-900">{isId ? "Kalender Ketersediaan (Read-only)" : "Availability Calendar (Read-only)"}</h3>
-        <p className="text-xs text-slate-500">{isId ? "Diperbarui" : "Updated"}: {formatDate(product.availabilityLastUpdated)}</p>
+        <h3 className="text-sm font-semibold text-[var(--brand-secondary)]">{isId ? "Kalender Ketersediaan (Read-only)" : "Availability Calendar (Read-only)"}</h3>
+        <p className="text-xs text-[var(--muted)]">{isId ? "Diperbarui" : "Updated"}: {formatDate(product.availabilityLastUpdated)}</p>
       </div>
       <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
         {monthDates.map((date) => {
@@ -35,7 +35,9 @@ export function AvailabilityCalendar({ product, locale }: Props) {
             <div
               key={date}
               className={`rounded border px-2 py-2 text-center text-xs ${
-                booked ? "border-rose-200 bg-rose-50 text-rose-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"
+                booked
+                  ? "border-[var(--brand-primary)]/30 bg-[var(--brand-soft)]/45 text-[var(--brand-primary)]"
+                  : "border-[var(--brand-secondary)]/30 bg-[var(--brand-accent)]/35 text-[var(--brand-secondary)]"
               }`}
             >
               {formatDate(date)}

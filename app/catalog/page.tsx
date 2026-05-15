@@ -18,7 +18,7 @@ export default async function CatalogPage() {
       <h1 className="text-3xl font-semibold">{isId ? "Katalog" : "Catalog"}</h1>
       <div className="mt-4 flex flex-wrap gap-2">
         {Object.entries(categoryLabel).map(([slug, label]) => (
-          <Link key={slug} href={`/category/${slug}`} className="rounded border border-slate-300 px-3 py-1 text-sm">
+          <Link key={slug} href={`/category/${slug}`} className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] px-3 py-1 text-sm">
             {label}
           </Link>
         ))}

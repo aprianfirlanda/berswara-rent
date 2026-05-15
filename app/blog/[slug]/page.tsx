@@ -38,10 +38,10 @@ export default async function BlogDetailPage({ params }: Props) {
 
   return (
     <main className="mx-auto flex-1 max-w-3xl px-4 py-10">
-      <article className="rounded border border-slate-200 bg-white p-6">
+      <article className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-6">
         <h1 className="text-3xl font-semibold">{post.title}</h1>
-        <p className="mt-3 text-xs text-slate-500">{post.publishedAt} • {post.author}</p>
-        <div className="mt-5 space-y-4 text-sm text-slate-700">
+        <p className="mt-3 text-xs text-[var(--muted)]">{post.publishedAt} • {post.author}</p>
+        <div className="mt-5 space-y-4 text-sm text-[var(--muted)]">
           {post.content.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}

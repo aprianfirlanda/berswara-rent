@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/product-card";
+import { FaqSection } from "@/components/faq-section";
 import { categoryLabel, products } from "@/lib/products";
 import { getLocale } from "@/lib/i18n";
 
@@ -21,20 +22,27 @@ export default async function Home() {
 
   return (
     <main className="flex-1">
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-2 md:items-center">
-          <div className="space-y-5">
-            <h1 className="text-4xl font-semibold text-slate-900">{isId ? "Sewa Perlengkapan Bayi Premium di Bandung" : "Premium Baby Gear for Rent in Bandung"}</h1>
-            <p className="text-base text-slate-600">
+      <section className="relative overflow-hidden px-4 pt-5">
+        <div className="absolute -left-16 top-10 h-44 w-44 rounded-full bg-[var(--brand-soft)]/70" />
+        <div className="absolute -right-10 bottom-10 h-36 w-36 rounded-full bg-[var(--brand-peach)]/45" />
+        <div className="mx-auto grid max-w-6xl gap-8 rounded-3xl border border-[var(--brand-soft)] bg-[var(--surface)] px-6 py-10 shadow-sm md:grid-cols-2 md:items-center">
+          <div className="space-y-6">
+            <span className="inline-block rounded-full bg-[var(--brand-soft)] px-4 py-1 text-xs font-bold text-[var(--brand-secondary)]">
+              {isId ? "Aman • Bersih • Siap Pakai" : "Safe • Clean • Ready to Use"}
+            </span>
+            <h1 className="text-4xl font-bold leading-tight text-[var(--brand-primary)] md:text-5xl">
+              {isId ? "Sewa Perlengkapan Bayi Premium di Bandung" : "Cute Premium Baby Gear Rental in Bandung"}
+            </h1>
+            <p className="max-w-xl text-base text-[var(--muted)]">
               {isId
                 ? "Pilihan sewa stroller, push walker, dan push bike yang aman, bersih, dan praktis."
                 : "Safe, clean, and practical rental options for strollers, push walkers, and push bikes."}
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/catalog" className="rounded bg-sky-700 px-4 py-2 text-sm font-medium text-white">
+              <Link href="/catalog" className="rounded-full bg-[var(--brand-secondary)] px-6 py-3 text-sm font-bold text-white shadow-sm hover:-translate-y-0.5">
                 {isId ? "Lihat Katalog" : "Browse Catalog"}
               </Link>
-              <Link href="/how-to-rent" className="rounded border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700">
+              <Link href="/how-to-rent" className="rounded-full border border-[var(--brand-soft)] bg-white px-6 py-3 text-sm font-bold text-[var(--brand-primary)] hover:bg-[var(--brand-accent)]/45">
                 {isId ? "Cara Sewa" : "How It Works"}
               </Link>
             </div>
@@ -44,23 +52,24 @@ export default async function Home() {
             alt="Baby in premium stroller for rental service"
             width={900}
             height={620}
-            className="h-auto w-full rounded-lg border border-slate-200"
+            className="float-soft h-auto w-full rounded-3xl border border-[var(--brand-soft)] bg-white p-2"
             priority
           />
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <h2 className="text-2xl font-semibold">{isId ? "Kategori Unggulan" : "Featured Categories"}</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        <h2 className="text-3xl font-bold text-[var(--brand-primary)]">{isId ? "Kategori Unggulan" : "Featured Categories"}</h2>
+        <div className="mt-6 grid gap-5 sm:grid-cols-3">
           {categories.map(([slug, label]) => (
             <Link
               key={slug}
               href={`/category/${slug}`}
-              className="rounded-lg border border-slate-200 bg-white p-5 hover:border-sky-300"
+              className="rounded-3xl border border-[var(--brand-soft)] bg-white p-6 shadow-sm hover:-translate-y-0.5"
             >
-              <h3 className="text-lg font-semibold text-slate-900">{label}</h3>
-              <p className="mt-2 text-sm text-slate-600">
+              <div className="mb-3 h-10 w-10 rounded-full bg-[var(--brand-soft)]" />
+              <h3 className="text-xl font-bold text-[var(--brand-primary)]">{label}</h3>
+              <p className="mt-2 text-sm text-[var(--muted)]">
                 {isId ? `Lihat ${label.toLowerCase()} yang tersedia untuk disewa.` : `See available ${label.toLowerCase()} for rent.`}
               </p>
             </Link>
@@ -68,8 +77,8 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-12">
-        <h2 className="text-2xl font-semibold">{isId ? "Produk Unggulan" : "Featured Products"}</h2>
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <h2 className="text-3xl font-bold text-[var(--brand-primary)]">{isId ? "Produk Unggulan" : "Featured Products"}</h2>
         <div className="mt-6 grid gap-5 md:grid-cols-3">
           {featured.map((product) => (
             <ProductCard key={product.id} product={product} locale={locale} />
@@ -77,28 +86,45 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-6xl gap-4 px-4 py-10 md:grid-cols-3">
-          <article className="rounded-lg border border-slate-200 p-5">
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <div className="grid gap-4 rounded-3xl border border-[var(--brand-soft)] bg-[var(--brand-accent)]/40 p-6 md:grid-cols-3">
+          <article className="rounded-3xl border border-[var(--brand-soft)] bg-white p-5">
             <h3 className="font-semibold">{isId ? "Higienitas Utama" : "Hygiene First"}</h3>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-[var(--muted)]">
               {isId ? "Semua item disanitasi sebelum dan sesudah setiap penyewaan." : "All items are sanitized before and after each rental."}
             </p>
           </article>
-          <article className="rounded-lg border border-slate-200 p-5">
+          <article className="rounded-3xl border border-[var(--brand-soft)] bg-white p-5">
             <h3 className="font-semibold">{isId ? "Brand Premium" : "Premium Brands"}</h3>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-[var(--muted)]">
               {isId ? "Perlengkapan terpercaya untuk kenyamanan, keamanan, dan keandalan." : "Trusted gear selected for comfort, safety, and reliability."}
             </p>
           </article>
-          <article className="rounded-lg border border-slate-200 p-5">
+          <article className="rounded-3xl border border-[var(--brand-soft)] bg-white p-5">
             <h3 className="font-semibold">{isId ? "Sewa Fleksibel" : "Flexible Rental"}</h3>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-[var(--muted)]">
               {isId ? "Paket mingguan dan bulanan untuk kebutuhan jangka pendek maupun panjang." : "Weekly and monthly plans for short visits or longer use."}
             </p>
           </article>
         </div>
       </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <h2 className="text-3xl font-bold text-[var(--brand-primary)]">{isId ? "Testimonial Orang Tua" : "Parent Testimonials"}</h2>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          {[
+            isId ? "Stroller bersih dan anak nyaman selama liburan." : "The stroller was clean and my child felt comfortable.",
+            isId ? "Proses sewa cepat, admin ramah, dan sangat membantu." : "Rental process was quick, and the team was very helpful.",
+            isId ? "Push walker bagus, kondisi mulus, pengiriman tepat waktu." : "Great push walker, excellent condition, on-time delivery.",
+          ].map((text) => (
+            <article key={text} className="rounded-3xl border border-[var(--brand-soft)] bg-[var(--brand-soft)]/55 p-5 shadow-sm">
+              <p className="text-sm text-[var(--foreground)]">{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <FaqSection locale={locale} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
     </main>
   );

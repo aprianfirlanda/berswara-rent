@@ -36,7 +36,7 @@ export function ProductGallery({ name, photos, videos, locale }: Props) {
       <button
         type="button"
         onClick={() => setIsLightboxOpen(true)}
-        className="group block w-full overflow-hidden rounded-lg border border-slate-200 bg-white"
+        className="group block w-full overflow-hidden rounded-lg border border-[var(--brand-soft)] bg-[var(--surface)]"
       >
         <Image
           src={activePhoto}
@@ -48,7 +48,7 @@ export function ProductGallery({ name, photos, videos, locale }: Props) {
       </button>
       <div className="grid grid-cols-3 gap-3">
         {photos.map((photo) => (
-          <button key={photo} type="button" onClick={() => setActivePhoto(photo)} className="overflow-hidden rounded border border-slate-200">
+          <button key={photo} type="button" onClick={() => setActivePhoto(photo)} className="overflow-hidden rounded border border-[var(--brand-soft)]">
             <Image src={photo} alt={`${name} thumbnail`} width={280} height={200} className="h-20 w-full object-cover" />
           </button>
         ))}
@@ -57,7 +57,7 @@ export function ProductGallery({ name, photos, videos, locale }: Props) {
         {videos.map((video) => (
           <iframe
             key={video}
-            className="aspect-video w-full rounded-lg border border-slate-200"
+            className="aspect-video w-full rounded-lg border border-[var(--brand-soft)]"
             src={youtubeEmbedUrl(video)}
             title={`${name} demo video`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -74,7 +74,7 @@ export function ProductGallery({ name, photos, videos, locale }: Props) {
         >
           <button
             type="button"
-            className="absolute right-4 top-4 rounded bg-white px-3 py-1 text-sm"
+            className="absolute right-4 top-4 rounded bg-[var(--surface)] px-3 py-1 text-sm text-[var(--brand-secondary)]"
             onClick={() => setIsLightboxOpen(false)}
           >
             {isId ? "Tutup" : "Close"}

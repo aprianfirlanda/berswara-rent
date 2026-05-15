@@ -28,7 +28,7 @@ export default async function HowToRentPage() {
       <h1 className="text-3xl font-semibold">{isId ? "Cara Sewa" : "How to Rent"}</h1>
       <ol className="mt-6 space-y-3">
         {steps.map((step, index) => (
-          <li key={step} className="rounded border border-slate-200 bg-white p-4 text-sm">
+          <li key={step} className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-4 text-sm">
             <span className="font-semibold">{isId ? `Langkah ${index + 1}:` : `Step ${index + 1}:`}</span> {step}
           </li>
         ))}

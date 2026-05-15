@@ -28,7 +28,7 @@ export function CatalogSearch({ products, locale }: Props) {
 
   return (
     <section className="mt-6">
-      <label htmlFor="catalog-search" className="mb-2 block text-sm font-medium text-slate-700">
+      <label htmlFor="catalog-search" className="mb-2 block text-sm font-medium text-[var(--brand-secondary)]">
         {isId ? "Cari produk" : "Search products"}
       </label>
       <input
@@ -37,9 +37,9 @@ export function CatalogSearch({ products, locale }: Props) {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder={isId ? "Cari berdasarkan nama, brand, atau kategori" : "Search by name, brand, or category"}
-        className="w-full rounded border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-sky-500"
+        className="w-full rounded border border-[var(--brand-soft)] bg-[var(--surface)] px-3 py-2 text-sm outline-none focus:border-[var(--brand-primary)]"
       />
-      <p className="mt-3 text-sm text-slate-600">
+      <p className="mt-3 text-sm text-[var(--muted)]">
         {isId ? `${filteredProducts.length} produk ditemukan` : `${filteredProducts.length} product(s) found`}
       </p>
       <div className="mt-6 grid gap-5 md:grid-cols-3">

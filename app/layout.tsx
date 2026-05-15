@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Baloo_2, Nunito } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { dictionaries, getLocale } from "@/lib/i18n";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const headingFont = Baloo_2({
+  variable: "--font-heading",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bodyFont = Nunito({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
@@ -33,9 +34,9 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
         <SiteHeader locale={locale} labels={dict.header} />
         {children}
         <SiteFooter
@@ -46,6 +47,7 @@ export default async function RootLayout({
             contact: dict.header.contact,
           }}
         />
+        <FloatingWhatsApp locale={locale} />
       </body>
     </html>
   );

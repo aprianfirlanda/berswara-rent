@@ -13,7 +13,7 @@ export default async function ContactPage() {
   return (
     <main className="mx-auto flex-1 max-w-5xl px-4 py-10">
       <h1 className="text-3xl font-semibold">{isId ? "Kontak" : "Contact"}</h1>
-      <div className="mt-6 space-y-3 rounded border border-slate-200 bg-white p-5 text-sm text-slate-700">
+      <div className="mt-6 space-y-3 rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5 text-sm text-[var(--muted)]">
         <p>WhatsApp: +62 812-3456-7890</p>
         <p>Instagram: @berswararent</p>
         <p>{isId ? "Lokasi" : "Location"}: Bandung, Jawa Barat</p>

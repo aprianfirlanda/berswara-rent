@@ -15,19 +15,19 @@ export default async function BlogPage() {
   return (
     <main className="mx-auto flex-1 max-w-5xl px-4 py-10">
       <h1 className="text-3xl font-semibold">{isId ? "Blog & Artikel" : "Blog & Articles"}</h1>
-      <p className="mt-2 text-sm text-slate-600">
+      <p className="mt-2 text-sm text-[var(--muted)]">
         {isId ? "Tips parenting dan ulasan perlengkapan untuk keluarga di Bandung." : "Parenting tips and gear reviews for families in Bandung."}
       </p>
       <div className="mt-8 space-y-4">
         {blogPosts.map((post) => (
-          <article key={post.slug} className="rounded border border-slate-200 bg-white p-5">
+          <article key={post.slug} className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
             <h2 className="text-xl font-semibold">
-              <Link href={`/blog/${post.slug}`} className="hover:text-sky-700">
+              <Link href={`/blog/${post.slug}`} className="hover:text-[var(--brand-primary)]">
                 {post.title}
               </Link>
             </h2>
-            <p className="mt-2 text-sm text-slate-600">{post.excerpt}</p>
-            <p className="mt-3 text-xs text-slate-500">{post.publishedAt} • {post.author}</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">{post.excerpt}</p>
+            <p className="mt-3 text-xs text-[var(--muted)]">{post.publishedAt} • {post.author}</p>
           </article>
         ))}
       </div>
