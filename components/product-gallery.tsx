@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import type { Locale } from "@/lib/i18n";
 
 type Props = {
   name: string;
   photos: string[];
   videos: string[];
+  locale: Locale;
 };
 
 function youtubeEmbedUrl(url: string): string {
@@ -24,7 +26,8 @@ function youtubeEmbedUrl(url: string): string {
   return url;
 }
 
-export function ProductGallery({ name, photos, videos }: Props) {
+export function ProductGallery({ name, photos, videos, locale }: Props) {
+  const isId = locale === "id";
   const [activePhoto, setActivePhoto] = useState(photos[0]);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -74,7 +77,7 @@ export function ProductGallery({ name, photos, videos }: Props) {
             className="absolute right-4 top-4 rounded bg-white px-3 py-1 text-sm"
             onClick={() => setIsLightboxOpen(false)}
           >
-            Close
+            {isId ? "Tutup" : "Close"}
           </button>
           <Image
             src={activePhoto}

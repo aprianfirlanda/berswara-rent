@@ -1,7 +1,9 @@
 import { formatDate, Product } from "@/lib/products";
+import type { Locale } from "@/lib/i18n";
 
 type Props = {
   product: Product;
+  locale: Locale;
 };
 
 function buildDates(startDate: Date, totalDays: number): string[] {
@@ -12,7 +14,8 @@ function buildDates(startDate: Date, totalDays: number): string[] {
   });
 }
 
-export function AvailabilityCalendar({ product }: Props) {
+export function AvailabilityCalendar({ product, locale }: Props) {
+  const isId = locale === "id";
   const today = new Date();
   const monthDates = buildDates(today, 28);
   const bookedDates = new Set(
@@ -22,8 +25,8 @@ export function AvailabilityCalendar({ product }: Props) {
   return (
     <section className="rounded border border-slate-200 bg-white p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-900">Availability Calendar (Read-only)</h3>
-        <p className="text-xs text-slate-500">Updated: {formatDate(product.availabilityLastUpdated)}</p>
+        <h3 className="text-sm font-semibold text-slate-900">{isId ? "Kalender Ketersediaan (Read-only)" : "Availability Calendar (Read-only)"}</h3>
+        <p className="text-xs text-slate-500">{isId ? "Diperbarui" : "Updated"}: {formatDate(product.availabilityLastUpdated)}</p>
       </div>
       <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
         {monthDates.map((date) => {
@@ -36,7 +39,7 @@ export function AvailabilityCalendar({ product }: Props) {
               }`}
             >
               {formatDate(date)}
-              <div className="mt-1">{booked ? "Booked" : "Available"}</div>
+              <div className="mt-1">{booked ? (isId ? "Terpesan" : "Booked") : isId ? "Tersedia" : "Available"}</div>
             </div>
           );
         })}

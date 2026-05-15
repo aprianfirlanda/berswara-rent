@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ProductGallery } from "@/components/product-gallery";
 import { AvailabilityCalendar } from "@/components/availability-calendar";
 import { categoryLabel, createWhatsAppLink, formatIdr, getProductById, products } from "@/lib/products";
+import { getLocale } from "@/lib/i18n";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -24,6 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
+  const locale = await getLocale();
+  const isId = locale === "id";
   const { id } = await params;
   const product = getProductById(id);
   if (!product) notFound();
@@ -52,21 +55,21 @@ export default async function ProductPage({ params }: Props) {
   return (
     <main className="mx-auto flex-1 max-w-6xl px-4 py-10">
       <nav className="mb-5 text-sm text-slate-600">
-        <Link href="/">Home</Link> / <Link href="/catalog">Catalog</Link> /{" "}
+        <Link href="/">{isId ? "Beranda" : "Home"}</Link> / <Link href="/catalog">{isId ? "Katalog" : "Catalog"}</Link> /{" "}
         <Link href={`/category/${product.category}`}>{categoryLabel[product.category]}</Link> / {product.name}
       </nav>
       <div className="grid gap-8 md:grid-cols-2">
-        <ProductGallery name={product.name} photos={product.photos} videos={product.videos} />
+        <ProductGallery name={product.name} photos={product.photos} videos={product.videos} locale={locale} />
         <section className="space-y-5">
           <h1 className="text-3xl font-semibold">{product.name}</h1>
           <p className="text-sm text-slate-600">{product.brand}</p>
           <p className={`text-sm font-medium ${product.availability ? "text-emerald-700" : "text-amber-700"}`}>
-            {product.availability ? "Available for rent" : "Please confirm availability"}
+            {product.availability ? (isId ? "Tersedia untuk disewa" : "Available for rent") : isId ? "Mohon konfirmasi ketersediaan" : "Please confirm availability"}
           </p>
           <table className="w-full overflow-hidden rounded border border-slate-200 text-sm">
             <tbody>
-              <tr className="border-b border-slate-200"><td className="p-2">Weekly</td><td className="p-2 font-medium">{formatIdr(product.weeklyPrice)}</td></tr>
-              <tr><td className="p-2">Monthly</td><td className="p-2 font-medium">{formatIdr(product.monthlyPrice)}</td></tr>
+              <tr className="border-b border-slate-200"><td className="p-2">{isId ? "Mingguan" : "Weekly"}</td><td className="p-2 font-medium">{formatIdr(product.weeklyPrice)}</td></tr>
+              <tr><td className="p-2">{isId ? "Bulanan" : "Monthly"}</td><td className="p-2 font-medium">{formatIdr(product.monthlyPrice)}</td></tr>
             </tbody>
           </table>
           <p className="text-sm text-slate-700">{product.description}</p>
@@ -76,9 +79,9 @@ export default async function ProductPage({ params }: Props) {
             ))}
           </ul>
           <dl className="grid grid-cols-2 gap-3 text-sm">
-            <div><dt className="text-slate-500">Age Range</dt><dd>{product.ageRange}</dd></div>
-            <div><dt className="text-slate-500">Weight Capacity</dt><dd>{product.weightCapacity}</dd></div>
-            <div className="col-span-2"><dt className="text-slate-500">Dimensions</dt><dd>{product.dimensions}</dd></div>
+            <div><dt className="text-slate-500">{isId ? "Rentang Usia" : "Age Range"}</dt><dd>{product.ageRange}</dd></div>
+            <div><dt className="text-slate-500">{isId ? "Kapasitas Berat" : "Weight Capacity"}</dt><dd>{product.weightCapacity}</dd></div>
+            <div className="col-span-2"><dt className="text-slate-500">{isId ? "Dimensi" : "Dimensions"}</dt><dd>{product.dimensions}</dd></div>
           </dl>
           <a
             href={createWhatsAppLink(product.name)}
@@ -86,14 +89,14 @@ export default async function ProductPage({ params }: Props) {
             rel="noopener noreferrer"
             className="sticky bottom-3 inline-flex rounded bg-emerald-600 px-4 py-3 text-sm font-medium text-white hover:bg-emerald-700"
           >
-            Check Availability on WhatsApp
+            {isId ? "Cek Ketersediaan via WhatsApp" : "Check Availability on WhatsApp"}
           </a>
-          <AvailabilityCalendar product={product} />
+          <AvailabilityCalendar product={product} locale={locale} />
         </section>
       </div>
 
       <section className="mt-12">
-        <h2 className="text-xl font-semibold">You might also like</h2>
+        <h2 className="text-xl font-semibold">{isId ? "Rekomendasi Produk Lainnya" : "You might also like"}</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {products.filter((item) => item.id !== product.id).slice(0, 3).map((item) => (
             <Link key={item.id} href={`/product/${item.id}`} className="rounded border border-slate-200 bg-white p-4 text-sm hover:border-sky-300">

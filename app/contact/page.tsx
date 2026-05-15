@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLocale } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Contact | Berswara Rent",
@@ -6,14 +7,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const locale = await getLocale();
+  const isId = locale === "id";
   return (
     <main className="mx-auto flex-1 max-w-5xl px-4 py-10">
-      <h1 className="text-3xl font-semibold">Contact</h1>
+      <h1 className="text-3xl font-semibold">{isId ? "Kontak" : "Contact"}</h1>
       <div className="mt-6 space-y-3 rounded border border-slate-200 bg-white p-5 text-sm text-slate-700">
         <p>WhatsApp: +62 812-3456-7890</p>
         <p>Instagram: @berswararent</p>
-        <p>Location: Bandung, Jawa Barat</p>
+        <p>{isId ? "Lokasi" : "Location"}: Bandung, Jawa Barat</p>
       </div>
     </main>
   );
