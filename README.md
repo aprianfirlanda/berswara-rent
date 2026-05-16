@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Berswara Rent
 
-## Getting Started
+Next.js 16 website for baby gear rental with Supabase-backed CMS.
 
-First, run the development server:
+## Setup
+
+1. Copy env:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Fill Supabase values in `.env`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. In Supabase SQL editor, run:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`supabase/schema.sql`
 
-## Learn More
+4. Create at least one Auth user (Email/Password) from Supabase Auth dashboard.
 
-To learn more about Next.js, take a look at the following resources:
+5. Ensure that user email is included in `ADMIN_EMAILS`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Run
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+Open:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Site: `http://localhost:3000`
+- Admin login: `http://localhost:3000/admin/login`
+- Admin CMS: `http://localhost:3000/admin`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## What is dynamic now
+
+- Home content (`hero`, benefits, testimonials, FAQ)
+- About content + contact block
+- Product catalog, category pages, product detail pages
+- Product images from Supabase Storage (`product-images` bucket)
+
+All of these are editable from the admin page.

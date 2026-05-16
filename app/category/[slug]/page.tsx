@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
-import { categoryLabel, getProductsByCategory, ProductCategory } from "@/lib/products";
+import { getDynamicProducts } from "@/lib/cms";
+import { categoryLabel, ProductCategory } from "@/lib/products";
 import { getLocale } from "@/lib/i18n";
 
 type Props = { params: Promise<{ slug: string }> };
-
-export async function generateStaticParams() {
-  return Object.keys(categoryLabel).map((slug) => ({ slug }));
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -32,7 +29,8 @@ export default async function CategoryPage({ params }: Props) {
 
   if (!label) notFound();
 
-  const items = getProductsByCategory(category);
+  const products = await getDynamicProducts();
+  const items = products.filter((product) => product.category === category);
   return (
     <main className="mx-auto flex-1 max-w-6xl px-4 py-10">
       <h1 className="text-3xl font-semibold">{label}</h1>

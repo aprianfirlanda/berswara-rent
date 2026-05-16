@@ -3,18 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductGallery } from "@/components/product-gallery";
 import { AvailabilityCalendar } from "@/components/availability-calendar";
-import { categoryLabel, createWhatsAppLink, formatIdr, getProductById, products } from "@/lib/products";
+import { getDynamicProducts } from "@/lib/cms";
+import { categoryLabel, createWhatsAppLink, formatIdr } from "@/lib/products";
 import { getLocale } from "@/lib/i18n";
 
 type Props = { params: Promise<{ id: string }> };
 
-export function generateStaticParams() {
-  return products.map((product) => ({ id: product.id }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const product = getProductById(id);
+  const products = await getDynamicProducts();
+  const product = products.find((item) => item.id === id);
   if (!product) return {};
 
   return {
@@ -28,7 +26,8 @@ export default async function ProductPage({ params }: Props) {
   const locale = await getLocale();
   const isId = locale === "id";
   const { id } = await params;
-  const product = getProductById(id);
+  const products = await getDynamicProducts();
+  const product = products.find((item) => item.id === id);
   if (!product) notFound();
 
   const productSchema = {

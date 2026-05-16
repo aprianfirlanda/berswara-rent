@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CatalogSearch } from "@/components/catalog-search";
-import { categoryLabel, products } from "@/lib/products";
+import { categoryLabel } from "@/lib/products";
+import { getDynamicProducts } from "@/lib/cms";
 import { getLocale } from "@/lib/i18n";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 
 export default async function CatalogPage() {
   const locale = await getLocale();
+  const products = await getDynamicProducts();
   const isId = locale === "id";
   return (
     <main className="mx-auto flex-1 max-w-6xl px-4 py-10">
