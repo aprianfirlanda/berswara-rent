@@ -1,9 +1,7 @@
-export type ProductCategory = "strollers" | "push-walkers" | "push-bikes";
-
 export type Product = {
   id: string;
   name: string;
-  category: ProductCategory;
+  category: string;
   brand: string;
   weeklyPrice: number;
   monthlyPrice: number;
@@ -15,18 +13,21 @@ export type Product = {
   availability: boolean;
   featured: boolean;
   availabilityLastUpdated: string;
-  availabilityCalendar: Array<{
-    date: string;
-    status: "available" | "booked";
-  }>;
+  availabilityCalendar: Array<
+    | {
+        mode?: "single";
+        date: string;
+        status: "available" | "booked";
+      }
+    | {
+        mode: "range";
+        startDate: string;
+        endDate: string;
+        status: "available" | "booked";
+      }
+  >;
   photos: string[];
   videos: string[];
-};
-
-export const categoryLabel: Record<ProductCategory, string> = {
-  strollers: "Strollers",
-  "push-walkers": "Push Walkers",
-  "push-bikes": "Push Bikes",
 };
 
 export const products: Product[] = [
@@ -129,8 +130,15 @@ export function getProductById(id: string): Product | undefined {
   return products.find((product) => product.id === id);
 }
 
-export function getProductsByCategory(category: ProductCategory): Product[] {
+export function getProductsByCategory(category: string): Product[] {
   return products.filter((product) => product.category === category);
+}
+
+export function formatCategoryLabel(category: string): string {
+  return category
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 export function createWhatsAppLink(productName: string): string {

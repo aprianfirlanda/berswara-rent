@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ProductGallery } from "@/components/product-gallery";
 import { AvailabilityCalendar } from "@/components/availability-calendar";
 import { getDynamicProducts } from "@/lib/cms";
-import { categoryLabel, createWhatsAppLink, formatIdr } from "@/lib/products";
+import { createWhatsAppLink, formatCategoryLabel, formatIdr } from "@/lib/products";
 import { getLocale } from "@/lib/i18n";
 
 type Props = { params: Promise<{ id: string }> };
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return {};
 
   return {
-    title: `Rent ${product.name} in Bandung - ${categoryLabel[product.category]} | Berswara Rent`,
+    title: `Rent ${product.name} in Bandung - ${formatCategoryLabel(product.category)} | Berswara Rent`,
     description: `Rent ${product.name} in Bandung for only ${formatIdr(product.weeklyPrice)}/week. Safe, sanitized, and ready for your little one.`,
     alternates: { canonical: `/product/${product.id}` },
   };
@@ -35,7 +35,7 @@ export default async function ProductPage({ params }: Props) {
     "@type": "Product",
     name: product.name,
     brand: product.brand,
-    category: categoryLabel[product.category],
+    category: formatCategoryLabel(product.category),
     offers: {
       "@type": "Offer",
       priceCurrency: "IDR",
@@ -55,7 +55,7 @@ export default async function ProductPage({ params }: Props) {
     <main className="mx-auto flex-1 max-w-6xl px-4 py-10">
       <nav className="mb-5 text-sm text-[var(--muted)]">
         <Link href="/">{isId ? "Beranda" : "Home"}</Link> / <Link href="/catalog">{isId ? "Katalog" : "Catalog"}</Link> /{" "}
-        <Link href={`/category/${product.category}`}>{categoryLabel[product.category]}</Link> / {product.name}
+        <Link href={`/category/${product.category}`}>{formatCategoryLabel(product.category)}</Link> / {product.name}
       </nav>
       <div className="grid gap-8 md:grid-cols-2">
         <ProductGallery name={product.name} photos={product.photos} videos={product.videos} locale={locale} />

@@ -5,6 +5,9 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/i18n";
 
 export type SiteContent = {
+  heroImage: string;
+  logoImage: string;
+  faviconImage: string;
   heroBadge: string;
   heroTitle: string;
   heroDescription: string;
@@ -21,6 +24,9 @@ export type SiteContent = {
 
 const defaultContent: Record<Locale, SiteContent> = {
   id: {
+    heroImage: "/images/hero-baby-stroller.svg",
+    logoImage: "/favicon.ico",
+    faviconImage: "/favicon.ico",
     heroBadge: "Aman • Bersih • Siap Pakai",
     heroTitle: "Sewa Perlengkapan Bayi Premium di Bandung",
     heroDescription: "Pilihan sewa stroller, push walker, dan push bike yang aman, bersih, dan praktis.",
@@ -65,6 +71,9 @@ const defaultContent: Record<Locale, SiteContent> = {
     ],
   },
   en: {
+    heroImage: "/images/hero-baby-stroller.svg",
+    logoImage: "/favicon.ico",
+    faviconImage: "/favicon.ico",
     heroBadge: "Safe • Clean • Ready to Use",
     heroTitle: "Cute Premium Baby Gear Rental in Bandung",
     heroDescription: "Safe, clean, and practical rental options for strollers, push walkers, and push bikes.",

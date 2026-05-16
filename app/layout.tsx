@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { dictionaries, getLocale } from "@/lib/i18n";
+import { getSiteContent } from "@/lib/cms";
 
 const headingFont = Baloo_2({
   variable: "--font-heading",
@@ -16,13 +17,21 @@ const bodyFont = Nunito({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://berswara-rent.example"),
-  title: "Berswara Rent | Premium Baby Equipment Rental Bandung",
-  description:
-    "Rent premium and clean baby gear from Berswara Rent in Bandung, Jawa Barat.",
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getSiteContent("id");
+  return {
+    metadataBase: new URL("https://berswara-rent.example"),
+    title: "Berswara Rent | Premium Baby Equipment Rental Bandung",
+    description:
+      "Rent premium and clean baby gear from Berswara Rent in Bandung, Jawa Barat.",
+    alternates: { canonical: "/" },
+    icons: {
+      icon: content.faviconImage,
+      shortcut: content.faviconImage,
+      apple: content.faviconImage,
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -31,13 +40,14 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   const dict = dictionaries[locale];
+  const content = await getSiteContent(locale);
   return (
     <html
       lang={locale}
       className={`${headingFont.variable} ${bodyFont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
-        <SiteHeader locale={locale} labels={dict.header} />
+        <SiteHeader locale={locale} labels={dict.header} logoImage={content.logoImage} />
         {children}
         <SiteFooter
           labels={{

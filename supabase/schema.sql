@@ -11,7 +11,7 @@ create table if not exists public.site_content (
 create table if not exists public.products (
   id text primary key,
   name text not null,
-  category text not null check (category in ('strollers', 'push-walkers', 'push-bikes')),
+  category text not null,
   brand text not null default '',
   weekly_price integer not null default 0,
   monthly_price integer not null default 0,
@@ -29,6 +29,8 @@ create table if not exists public.products (
   updated_at timestamptz not null default now(),
   created_at timestamptz not null default now()
 );
+
+alter table public.products drop constraint if exists products_category_check;
 
 alter table public.site_content enable row level security;
 alter table public.products enable row level security;
@@ -70,6 +72,9 @@ values
     'id',
     '{
       "heroBadge":"Aman • Bersih • Siap Pakai",
+      "heroImage":"/images/hero-baby-stroller.svg",
+      "logoImage":"/favicon.ico",
+      "faviconImage":"/favicon.ico",
       "heroTitle":"Sewa Perlengkapan Bayi Premium di Bandung",
       "heroDescription":"Pilihan sewa stroller, push walker, dan push bike yang aman, bersih, dan praktis.",
       "aboutSummary":"Kami membantu keluarga di Bandung mengakses perlengkapan bayi premium tanpa biaya kepemilikan dan beban penyimpanan yang tinggi.",
@@ -96,6 +101,9 @@ values
     'en',
     '{
       "heroBadge":"Safe • Clean • Ready to Use",
+      "heroImage":"/images/hero-baby-stroller.svg",
+      "logoImage":"/favicon.ico",
+      "faviconImage":"/favicon.ico",
       "heroTitle":"Cute Premium Baby Gear Rental in Bandung",
       "heroDescription":"Safe, clean, and practical rental options for strollers, push walkers, and push bikes.",
       "aboutSummary":"We help families in Bandung access premium baby gear without high ownership cost or storage burden.",
@@ -134,3 +142,19 @@ create policy "authenticated write product-images"
   on storage.objects for insert
   to authenticated
   with check (bucket_id = 'product-images');
+
+insert into storage.buckets (id, name, public)
+values ('site-assets', 'site-assets', true)
+on conflict (id) do nothing;
+
+drop policy if exists "public read site-assets" on storage.objects;
+create policy "public read site-assets"
+  on storage.objects for select
+  to public
+  using (bucket_id = 'site-assets');
+
+drop policy if exists "authenticated write site-assets" on storage.objects;
+create policy "authenticated write site-assets"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'site-assets');

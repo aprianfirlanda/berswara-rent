@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Product, categoryLabel, formatIdr } from "@/lib/products";
+import { Product, formatCategoryLabel, formatIdr } from "@/lib/products";
 import type { Locale } from "@/lib/i18n";
 
 export function ProductCard({ product, locale }: { product: Product; locale: Locale }) {
@@ -15,7 +15,7 @@ export function ProductCard({ product, locale }: { product: Product; locale: Loc
         className="h-48 w-full object-cover"
       />
       <div className="space-y-3 p-4">
-        <div className="inline-block rounded-full bg-[var(--brand-soft)] px-3 py-1 text-xs font-bold text-[var(--brand-secondary)]">{categoryLabel[product.category]}</div>
+        <div className="inline-block rounded-full bg-[var(--brand-soft)] px-3 py-1 text-xs font-bold text-[var(--brand-secondary)]">{formatCategoryLabel(product.category)}</div>
         <h3 className="text-lg font-semibold text-[var(--brand-secondary)]">{product.name}</h3>
         <p className="text-sm text-[var(--muted)]">{formatIdr(product.weeklyPrice)}/week</p>
         <p className={`text-xs font-medium ${product.availability ? "text-[var(--brand-secondary)]" : "text-[var(--brand-primary)]"}`}>

@@ -75,6 +75,9 @@ export async function saveSiteContent(formData: FormData) {
   }
 
   const payload: SiteContent = {
+    heroImage: String(formData.get("heroImage") ?? ""),
+    logoImage: String(formData.get("logoImage") ?? ""),
+    faviconImage: String(formData.get("faviconImage") ?? ""),
     heroBadge: String(formData.get("heroBadge") ?? ""),
     heroTitle: String(formData.get("heroTitle") ?? ""),
     heroDescription: String(formData.get("heroDescription") ?? ""),
@@ -103,6 +106,7 @@ export async function saveSiteContent(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/about");
   revalidatePath("/admin");
+  revalidatePath("/catalog");
   redirect(`/admin?saved=1&locale=${locale}`);
 }
 
@@ -111,37 +115,59 @@ export async function saveProduct(formData: FormData) {
 
   const name = String(formData.get("name") ?? "");
   const customId = String(formData.get("id") ?? "");
+  const category = String(formData.get("category") ?? "").trim();
   const id = customId || slugify(name, { lower: true, strict: true });
-  if (!id || !name) throw new Error("Product id and name are required");
+  if (!id || !name || !category) throw new Error("Product id, name, and category are required");
 
-  const photos = String(formData.get("photos") ?? "")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
+  const photosJson = String(formData.get("photosJson") ?? "[]");
+  const videosJson = String(formData.get("videosJson") ?? "[]");
+  const availabilityCalendarJson = String(formData.get("availabilityCalendarJson") ?? "[]");
 
-  const videos = String(formData.get("videos") ?? "")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
+  let photos: string[] = [];
+  let videos: string[] = [];
+  let availabilityCalendar: Array<{ date: string; status: "available" | "booked" }> = [];
+
+  try {
+    const parsed = JSON.parse(photosJson);
+    photos = Array.isArray(parsed) ? parsed.map((item) => String(item).trim()).filter(Boolean) : [];
+  } catch {
+    throw new Error("photosJson must be valid JSON array");
+  }
+
+  try {
+    const parsed = JSON.parse(videosJson);
+    videos = Array.isArray(parsed) ? parsed.map((item) => String(item).trim()).filter(Boolean) : [];
+  } catch {
+    throw new Error("videosJson must be valid JSON array");
+  }
 
   const features = String(formData.get("features") ?? "")
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
 
-  const availabilityCalendarRaw = String(formData.get("availabilityCalendar") ?? "[]");
-  let availabilityCalendar: Array<{ date: string; status: "available" | "booked" }> = [];
   try {
-    availabilityCalendar = JSON.parse(availabilityCalendarRaw);
+    const parsed = JSON.parse(availabilityCalendarJson);
+    availabilityCalendar = Array.isArray(parsed)
+      ? parsed
+          .map((item) => {
+            const status: "available" | "booked" = item?.status === "booked" ? "booked" : "available";
+            return {
+              date: String(item?.date ?? ""),
+              status,
+            };
+          })
+          .filter((item) => item.date)
+      : [];
   } catch {
-    throw new Error("availabilityCalendar must be valid JSON");
+    throw new Error("availabilityCalendarJson must be valid JSON array");
   }
 
   const { error } = await supabase.from("products").upsert(
     {
       id,
       name,
-      category: String(formData.get("category") ?? "strollers"),
+      category,
       brand: String(formData.get("brand") ?? ""),
       weekly_price: Number(formData.get("weeklyPrice") ?? 0),
       monthly_price: Number(formData.get("monthlyPrice") ?? 0),
@@ -166,7 +192,7 @@ export async function saveProduct(formData: FormData) {
   revalidatePath("/catalog");
   revalidatePath(`/product/${id}`);
   revalidatePath("/admin");
-  redirect("/admin?savedProduct=1");
+  redirect("/admin/products?savedProduct=1");
 }
 
 export async function deleteProduct(formData: FormData) {
@@ -178,7 +204,7 @@ export async function deleteProduct(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/catalog");
   revalidatePath("/admin");
-  redirect("/admin?deleted=1");
+  redirect("/admin/products?deleted=1");
 }
 
 export async function uploadProductImage(formData: FormData) {
@@ -213,5 +239,58 @@ export async function uploadProductImage(formData: FormData) {
   revalidatePath("/admin");
   revalidatePath(`/product/${productId}`);
   revalidatePath("/catalog");
-  redirect(`/admin?uploaded=1&product=${productId}`);
+  const redirectTo = String(formData.get("redirectTo") ?? `/admin/products/${productId}/edit`);
+  redirect(`${redirectTo}${redirectTo.includes("?") ? "&" : "?"}uploaded=1`);
+}
+
+export async function uploadSiteAsset(formData: FormData) {
+  await requireAdmin();
+  const assetType = String(formData.get("assetType") ?? "");
+  const file = formData.get("image") as File | null;
+  if (!file) throw new Error("Image file is required");
+  if (!["heroImage", "logoImage", "faviconImage"].includes(assetType)) {
+    throw new Error("Invalid asset type");
+  }
+
+  const adminClient = createSupabaseAdminClient();
+  const extension = file.name.split(".").pop()?.toLowerCase() ?? "png";
+  const path = `${assetType}/${Date.now()}.${extension}`;
+  const bytes = await file.arrayBuffer();
+
+  const { error: uploadError } = await adminClient.storage.from("site-assets").upload(path, bytes, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (uploadError) throw new Error(uploadError.message);
+
+  const { data } = adminClient.storage.from("site-assets").getPublicUrl(path);
+  const publicUrl = data.publicUrl;
+
+  const supabase = await createSupabaseServerClient();
+  const locales: Locale[] = ["id", "en"];
+  for (const locale of locales) {
+    const { data: row } = await supabase.from("site_content").select("value").eq("key", "site").eq("locale", locale).maybeSingle();
+    const value = (row?.value ?? {}) as Partial<SiteContent>;
+    const nextValue = {
+      ...value,
+      [assetType]: publicUrl,
+    } as SiteContent;
+
+    const { error } = await supabase.from("site_content").upsert(
+      {
+        key: "site",
+        locale,
+        value: nextValue,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "key,locale" },
+    );
+    if (error) throw new Error(error.message);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath("/about");
+  revalidatePath("/catalog");
+  redirect(`/admin?section=content&assetUpdated=1&type=${assetType}`);
 }

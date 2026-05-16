@@ -2,16 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
 import { getDynamicProducts } from "@/lib/cms";
-import { categoryLabel, ProductCategory } from "@/lib/products";
+import { formatCategoryLabel } from "@/lib/products";
 import { getLocale } from "@/lib/i18n";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const category = slug as ProductCategory;
-  const label = categoryLabel[category];
-  if (!label) return {};
+  const label = formatCategoryLabel(slug);
 
   return {
     title: `${label} | Berswara Rent`,
@@ -24,13 +22,11 @@ export default async function CategoryPage({ params }: Props) {
   const locale = await getLocale();
   const isId = locale === "id";
   const { slug } = await params;
-  const category = slug as ProductCategory;
-  const label = categoryLabel[category];
-
-  if (!label) notFound();
+  const label = formatCategoryLabel(slug);
 
   const products = await getDynamicProducts();
-  const items = products.filter((product) => product.category === category);
+  const items = products.filter((product) => product.category === slug);
+  if (!items.length) notFound();
   return (
     <main className="mx-auto flex-1 max-w-6xl px-4 py-10">
       <h1 className="text-3xl font-semibold">{label}</h1>

@@ -8,6 +8,7 @@ import type { Locale } from "@/lib/i18n";
 export function SiteHeader({
   locale,
   labels,
+  logoImage,
 }: {
   locale: Locale;
   labels: {
@@ -17,6 +18,7 @@ export function SiteHeader({
     about: string;
     language: string;
   };
+  logoImage: string;
 }) {
   const [open, setOpen] = useState(false);
   const navItems = [
@@ -39,7 +41,7 @@ export function SiteHeader({
     <header className="sticky top-0 z-40 px-4 py-3">
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-3xl border border-[var(--brand-soft)] bg-[var(--surface)] px-5 py-3 shadow-sm">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-[var(--brand-secondary)]">
-          <Image src="/favicon.ico" alt="Berswara Rent logo" width={24} height={24} className="h-6 w-6 rounded" />
+          <Image src={logoImage} alt="Berswara Rent logo" width={24} height={24} className="h-6 w-6 rounded" />
           <span>Berswara Rent</span>
         </Link>
         <button

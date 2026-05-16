@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/product-card";
 import { FaqSection } from "@/components/faq-section";
-import { categoryLabel } from "@/lib/products";
+import { formatCategoryLabel } from "@/lib/products";
 import { getDynamicProducts, getSiteContent } from "@/lib/cms";
 import { getLocale } from "@/lib/i18n";
 
@@ -12,7 +12,10 @@ export default async function Home() {
   const content = await getSiteContent(locale);
   const products = await getDynamicProducts();
   const featured = products.filter((product) => product.featured);
-  const categories = Object.entries(categoryLabel);
+  const categories = Array.from(new Set(products.map((product) => product.category))).map((slug) => ({
+    slug,
+    label: formatCategoryLabel(slug),
+  }));
 
   const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -26,9 +29,9 @@ export default async function Home() {
   return (
     <main className="flex-1">
       <section className="relative overflow-hidden px-4 pt-5">
-        <div className="absolute -left-16 top-10 h-44 w-44 rounded-full bg-[var(--brand-soft)]/70" />
-        <div className="absolute -right-10 bottom-10 h-36 w-36 rounded-full bg-[var(--brand-peach)]/45" />
-        <div className="mx-auto grid max-w-6xl gap-8 rounded-3xl border border-[var(--brand-soft)] bg-[var(--surface)] px-6 py-10 shadow-sm md:grid-cols-2 md:items-center">
+        <div className="absolute z-0 -left-16 top-10 h-44 w-44 rounded-full bg-[var(--brand-soft)]/70" />
+        <div className="absolute z-0 -right-10 bottom-10 h-36 w-36 rounded-full bg-[var(--brand-peach)]/45" />
+        <div className="relative z-10 mx-auto grid max-w-6xl gap-8 rounded-3xl border border-[var(--brand-soft)] bg-[var(--surface)] px-6 py-10 shadow-sm md:grid-cols-2 md:items-center">
           <div className="space-y-6">
             <span className="inline-block rounded-full bg-[var(--brand-soft)] px-4 py-1 text-xs font-bold text-[var(--brand-secondary)]">
               {content.heroBadge}
@@ -49,7 +52,7 @@ export default async function Home() {
             </div>
           </div>
           <Image
-            src="/images/hero-baby-stroller.svg"
+            src={content.heroImage}
             alt="Baby in premium stroller for rental service"
             width={900}
             height={620}
@@ -62,7 +65,7 @@ export default async function Home() {
       <section className="mx-auto max-w-6xl px-4 py-16">
         <h2 className="text-3xl font-bold text-[var(--brand-primary)]">{isId ? "Kategori Unggulan" : "Featured Categories"}</h2>
         <div className="mt-6 grid gap-5 sm:grid-cols-3">
-          {categories.map(([slug, label]) => (
+          {categories.map(({ slug, label }) => (
             <Link
               key={slug}
               href={`/category/${slug}`}
