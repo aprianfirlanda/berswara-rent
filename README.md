@@ -1,4 +1,4 @@
-## Berswara Rent
+## Berswara Baby Rent
 
 Next.js 16 website for baby gear rental with Supabase-backed CMS.
 

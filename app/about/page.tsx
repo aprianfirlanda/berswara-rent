@@ -3,8 +3,8 @@ import { getSiteContent } from "@/lib/cms";
 import { getLocale } from "@/lib/i18n";
 
 export const metadata: Metadata = {
-  title: "About Us | Berswara Rent",
-  description: "Learn about Berswara Rent and how to contact us in Bandung.",
+  title: "About Us | Berswara Baby Rent",
+  description: "Learn about Berswara Baby Rent and how to contact us in Bandung.",
   alternates: { canonical: "/about" },
 };
 
@@ -14,7 +14,7 @@ export default async function AboutPage() {
   const content = await getSiteContent(locale);
   return (
     <main className="mx-auto flex-1 max-w-5xl px-4 py-10">
-      <h1 className="text-3xl font-semibold">{isId ? "Tentang Berswara Rent" : "About Berswara Rent"}</h1>
+      <h1 className="text-3xl font-semibold">{isId ? "Tentang Berswara Baby Rent" : "About Berswara Rent"}</h1>
       <p className="mt-4 text-sm text-[var(--muted)]">{content.aboutSummary}</p>
       <section className="mt-8">
         <article className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">

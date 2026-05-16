@@ -3,8 +3,8 @@ import type { Locale } from "@/lib/i18n";
 export function FloatingWhatsApp({ locale }: { locale: Locale }) {
   const isId = locale === "id";
   const message = isId
-    ? "Halo Berswara Rent, saya ingin tanya ketersediaan produk."
-    : "Hi Berswara Rent, I would like to ask about product availability.";
+    ? "Halo Berswara Baby Rent, saya ingin tanya ketersediaan produk."
+    : "Hi Berswara Baby Rent, I would like to ask about product availability.";
   const whatsappHref = `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`;
   const instagramHref = "https://instagram.com/berswararent";
 

@@ -158,7 +158,7 @@ export function formatCategoryLabel(category: string): string {
 }
 
 export function createWhatsAppLink(productName: string): string {
-  const message = `Hi Berswara Rent, I'm interested in renting the ${productName}. Is it available for [Dates]?`;
+  const message = `Hi Berswara Baby Rent, I'm interested in renting the ${productName}. Is it available for [Dates]?`;
   return `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`;
 }
 

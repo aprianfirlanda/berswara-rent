@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const label = formatCategoryLabel(slug);
 
   return {
-    title: `${label} | Berswara Rent`,
+    title: `${label} | Berswara Baby Rent`,
     description: `Browse ${label.toLowerCase()} available for rental in Bandung.`,
     alternates: { canonical: `/category/${slug}` },
   };

@@ -21,9 +21,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const content = await getSiteContent("id");
   return {
     metadataBase: new URL("https://berswara-rent.example"),
-    title: "Berswara Rent | Premium Baby Equipment Rental Bandung",
+    title: "Berswara Baby Rent | Premium Baby Equipment Rental Bandung",
     description:
-      "Rent premium and clean baby gear from Berswara Rent in Bandung, Jawa Barat.",
+      "Rent premium and clean baby gear from Berswara Baby Rent in Bandung, Jawa Barat.",
     alternates: { canonical: "/" },
     icons: {
       icon: content.faviconImage,

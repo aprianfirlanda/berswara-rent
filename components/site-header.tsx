@@ -41,8 +41,8 @@ export function SiteHeader({
     <header className="sticky top-0 z-40 px-4 py-3">
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-3xl border border-[var(--brand-soft)] bg-[var(--surface)] px-5 py-3 shadow-sm">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-[var(--brand-secondary)]">
-          <Image src={logoImage} alt="Berswara Rent logo" width={24} height={24} className="h-6 w-6 rounded" />
-          <span>Berswara Rent</span>
+          <Image src={logoImage} alt="Berswara Baby Rent logo" width={24} height={24} className="h-6 w-6 rounded" />
+          <span>Berswara Baby Rent</span>
         </Link>
         <button
           type="button"

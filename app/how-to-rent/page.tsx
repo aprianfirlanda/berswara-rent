@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { getLocale } from "@/lib/i18n";
 
 export const metadata: Metadata = {
-  title: "How to Rent | Berswara Rent",
-  description: "Simple steps to rent baby gear from Berswara Rent in Bandung.",
+  title: "How to Rent | Berswara Baby Rent",
+  description: "Simple steps to rent baby gear from Berswara Baby Rent in Bandung.",
   alternates: { canonical: "/how-to-rent" },
 };
 

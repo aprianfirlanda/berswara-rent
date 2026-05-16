@@ -20,7 +20,7 @@ export default async function Home() {
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: "Berswara Rent",
+    name: "Berswara Baby Rent",
     description: "Premium baby gear rental service in Bandung.",
     areaServed: "Bandung, Jawa Barat",
     address: { "@type": "PostalAddress", addressLocality: "Bandung", addressRegion: "Jawa Barat" },

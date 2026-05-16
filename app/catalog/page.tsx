@@ -6,7 +6,7 @@ import { getDynamicProducts } from "@/lib/cms";
 import { getLocale } from "@/lib/i18n";
 
 export const metadata: Metadata = {
-  title: "Catalog | Berswara Rent",
+  title: "Catalog | Berswara Baby Rent",
   description: "Explore strollers, push walkers, and push bikes available for rental in Bandung.",
   alternates: { canonical: "/catalog" },
 };

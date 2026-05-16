@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return {};
 
   return {
-    title: `Rent ${product.name} in Bandung - ${formatCategoryLabel(product.category)} | Berswara Rent`,
+    title: `Rent ${product.name} in Bandung - ${formatCategoryLabel(product.category)} | Berswara Baby Rent`,
     description: `Rent ${product.name} in Bandung for only ${formatIdr(product.weeklyPrice)}/week. Safe, sanitized, and ready for your little one.`,
     alternates: { canonical: `/product/${product.id}` },
   };
