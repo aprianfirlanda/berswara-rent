@@ -21,10 +21,7 @@ type Dict = {
     catalog: string;
     howToRent: string;
     about: string;
-    blog: string;
     account: string;
-    contact: string;
-    browseCatalog: string;
     language: string;
   };
   footer: {
@@ -50,10 +47,7 @@ export const dictionaries: Record<Locale, Dict> = {
       catalog: "Katalog",
       howToRent: "Cara Sewa",
       about: "Tentang Kami",
-      blog: "Blog",
       account: "Akun",
-      contact: "Kontak",
-      browseCatalog: "Lihat Katalog",
       language: "Bahasa",
     },
     footer: {
@@ -77,10 +71,7 @@ export const dictionaries: Record<Locale, Dict> = {
       catalog: "Catalog",
       howToRent: "How to Rent",
       about: "About Us",
-      blog: "Blog",
       account: "Account",
-      contact: "Contact",
-      browseCatalog: "Browse Catalog",
       language: "Language",
     },
     footer: {

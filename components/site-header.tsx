@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Locale } from "@/lib/i18n";
@@ -14,9 +15,6 @@ export function SiteHeader({
     catalog: string;
     howToRent: string;
     about: string;
-    blog: string;
-    contact: string;
-    browseCatalog: string;
     language: string;
   };
 }) {
@@ -26,8 +24,6 @@ export function SiteHeader({
     { href: "/catalog", label: labels.catalog },
     { href: "/how-to-rent", label: labels.howToRent },
     { href: "/about", label: labels.about },
-    { href: "/blog", label: labels.blog },
-    { href: "/contact", label: labels.contact },
   ];
 
   async function onLocaleChange(nextLocale: Locale) {
@@ -42,8 +38,9 @@ export function SiteHeader({
   return (
     <header className="sticky top-0 z-40 px-4 py-3">
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-3xl border border-[var(--brand-soft)] bg-[var(--surface)] px-5 py-3 shadow-sm">
-        <Link href="/" className="text-lg font-semibold text-[var(--brand-secondary)]">
-          Berswara Rent
+        <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-[var(--brand-secondary)]">
+          <Image src="/favicon.ico" alt="Berswara Rent logo" width={24} height={24} className="h-6 w-6 rounded" />
+          <span>Berswara Rent</span>
         </Link>
         <button
           type="button"
@@ -59,9 +56,6 @@ export function SiteHeader({
               {item.label}
             </Link>
           ))}
-          <Link href="/catalog" className="rounded-full bg-[var(--brand-secondary)] px-4 py-2 text-sm font-medium text-white hover:opacity-90">
-            {labels.browseCatalog}
-          </Link>
           <label className="text-sm text-[var(--muted)]">
             {labels.language}
             <select
@@ -83,13 +77,6 @@ export function SiteHeader({
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/catalog"
-              className="rounded-full bg-[var(--brand-secondary)] px-3 py-2 text-center text-sm font-medium text-white"
-              onClick={() => setOpen(false)}
-            >
-              {labels.browseCatalog}
-            </Link>
             <label className="text-sm text-[var(--muted)]">
               {labels.language}
               <select

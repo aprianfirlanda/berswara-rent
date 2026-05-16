@@ -12,7 +12,6 @@ export function SiteFooter({
     location: string;
     catalog: string;
     about: string;
-    contact: string;
   };
 }) {
   return (
@@ -27,7 +26,6 @@ export function SiteFooter({
           <ul className="mt-2 space-y-2 text-sm text-[var(--muted)]">
             <li><Link href="/catalog">{labels.catalog}</Link></li>
             <li><Link href="/about">{labels.about}</Link></li>
-            <li><Link href="/contact">{labels.contact}</Link></li>
           </ul>
         </div>
         <div>

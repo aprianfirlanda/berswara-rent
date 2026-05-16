@@ -44,7 +44,6 @@ export default async function RootLayout({
             ...dict.footer,
             catalog: dict.header.catalog,
             about: dict.header.about,
-            contact: dict.header.contact,
           }}
         />
         <FloatingWhatsApp locale={locale} />
