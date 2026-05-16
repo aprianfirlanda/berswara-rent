@@ -129,7 +129,7 @@ export default async function AdminPage({ searchParams }: Props) {
 
       <section className="mt-8 rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
         <h2 className="text-xl font-semibold">Upload Product Image</h2>
-        <form action={uploadProductImage} className="mt-4 grid gap-3 md:grid-cols-3" encType="multipart/form-data">
+        <form action={uploadProductImage} className="mt-4 grid gap-3 md:grid-cols-3">
           <label className="block text-sm">Product ID<input name="productId" required className="mt-1 w-full rounded border px-3 py-2" /></label>
           <label className="block text-sm">Image File<input type="file" name="image" accept="image/*" required className="mt-1 w-full rounded border px-3 py-2" /></label>
           <div className="flex items-end"><button type="submit" className="rounded bg-[var(--brand-secondary)] px-4 py-2 text-sm font-medium text-white">Upload & Attach</button></div>
