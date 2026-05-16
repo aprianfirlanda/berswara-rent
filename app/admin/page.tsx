@@ -4,6 +4,7 @@ import { getDynamicProducts, getSiteContent } from "@/lib/cms";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getAdminEmails } from "@/lib/supabase/config";
 import { signOutAdmin, saveProduct, saveSiteContent, deleteProduct, uploadProductImage } from "@/app/admin/actions";
+import { AdminContentArraysEditor } from "@/components/admin-content-arrays-editor";
 import type { Locale } from "@/lib/i18n";
 
 type Props = {
@@ -94,23 +95,11 @@ export default async function AdminPage({ searchParams }: Props) {
             <label className="block text-sm">Location<input name="contactLocation" defaultValue={content.contact.location} className="mt-1 w-full rounded border px-3 py-2" /></label>
           </div>
 
-          {[1, 2, 3].map((index) => (
-            <div key={index} className="grid gap-3 md:grid-cols-2">
-              <label className="block text-sm">Benefit {index} Title<input name={`benefit_title_${index}`} defaultValue={content.benefits[index - 1]?.title ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
-              <label className="block text-sm">Benefit {index} Description<input name={`benefit_description_${index}`} defaultValue={content.benefits[index - 1]?.description ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
-            </div>
-          ))}
-
-          {[1, 2, 3].map((index) => (
-            <label key={index} className="block text-sm">Testimonial {index}<input name={`testimonial_${index}`} defaultValue={content.testimonials[index - 1] ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
-          ))}
-
-          {[1, 2, 3].map((index) => (
-            <div key={index} className="grid gap-3 md:grid-cols-2">
-              <label className="block text-sm">FAQ {index} Question<input name={`faq_q_${index}`} defaultValue={content.faqs[index - 1]?.q ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
-              <label className="block text-sm">FAQ {index} Answer<input name={`faq_a_${index}`} defaultValue={content.faqs[index - 1]?.a ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
-            </div>
-          ))}
+          <AdminContentArraysEditor
+            initialBenefits={content.benefits}
+            initialTestimonials={content.testimonials}
+            initialFaqs={content.faqs}
+          />
 
           <button type="submit" className="rounded bg-[var(--brand-secondary)] px-4 py-2 text-sm font-medium text-white">Save Content</button>
         </form>

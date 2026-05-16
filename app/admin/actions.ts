@@ -36,19 +36,43 @@ export async function saveSiteContent(formData: FormData) {
   const { supabase } = await requireAdmin();
   const locale = (formData.get("locale") as Locale) ?? "id";
 
-  const benefits = [1, 2, 3].map((index) => ({
-    title: String(formData.get(`benefit_title_${index}`) ?? ""),
-    description: String(formData.get(`benefit_description_${index}`) ?? ""),
-  }));
+  const benefitsRaw = String(formData.get("benefitsJson") ?? "[]");
+  const testimonialsRaw = String(formData.get("testimonialsText") ?? "");
+  const faqsRaw = String(formData.get("faqsJson") ?? "[]");
 
-  const testimonials = [1, 2, 3]
-    .map((index) => String(formData.get(`testimonial_${index}`) ?? ""))
+  let benefits: Array<{ title: string; description: string }> = [];
+  let faqs: Array<{ q: string; a: string }> = [];
+
+  try {
+    const parsed = JSON.parse(benefitsRaw);
+    if (!Array.isArray(parsed)) throw new Error("Benefits must be an array");
+    benefits = parsed
+      .map((item) => ({
+        title: String(item?.title ?? "").trim(),
+        description: String(item?.description ?? "").trim(),
+      }))
+      .filter((item) => item.title && item.description);
+  } catch {
+    throw new Error("benefitsJson must be a valid JSON array of {title, description}");
+  }
+
+  const testimonials = testimonialsRaw
+    .split("\n")
+    .map((item) => item.trim())
     .filter(Boolean);
 
-  const faqs = [1, 2, 3].map((index) => ({
-    q: String(formData.get(`faq_q_${index}`) ?? ""),
-    a: String(formData.get(`faq_a_${index}`) ?? ""),
-  }));
+  try {
+    const parsed = JSON.parse(faqsRaw);
+    if (!Array.isArray(parsed)) throw new Error("FAQs must be an array");
+    faqs = parsed
+      .map((item) => ({
+        q: String(item?.q ?? "").trim(),
+        a: String(item?.a ?? "").trim(),
+      }))
+      .filter((item) => item.q && item.a);
+  } catch {
+    throw new Error("faqsJson must be a valid JSON array of {q, a}");
+  }
 
   const payload: SiteContent = {
     heroBadge: String(formData.get("heroBadge") ?? ""),
