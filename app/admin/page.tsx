@@ -33,6 +33,7 @@ export default async function AdminPage({ searchParams }: Props) {
 
   const params = await searchParams;
   const locale = (typeof params.locale === "string" ? params.locale : "id") as Locale;
+  const section = typeof params.section === "string" ? params.section : "content";
   const content = await getSiteContent(locale);
   const products = await getDynamicProducts();
 
@@ -55,7 +56,29 @@ export default async function AdminPage({ searchParams }: Props) {
         </div>
       </div>
 
-      <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
+      <div className="mb-6 flex flex-wrap gap-2">
+        <Link
+          href={`/admin?section=content&locale=${locale}`}
+          className={`rounded px-3 py-2 text-sm ${section === "content" ? "bg-[var(--brand-secondary)] text-white" : "border border-[var(--brand-soft)]"}`}
+        >
+          Content
+        </Link>
+        <Link
+          href={`/admin?section=products&locale=${locale}`}
+          className={`rounded px-3 py-2 text-sm ${section === "products" ? "bg-[var(--brand-secondary)] text-white" : "border border-[var(--brand-soft)]"}`}
+        >
+          Products
+        </Link>
+        <Link
+          href={`/admin?section=media&locale=${locale}`}
+          className={`rounded px-3 py-2 text-sm ${section === "media" ? "bg-[var(--brand-secondary)] text-white" : "border border-[var(--brand-soft)]"}`}
+        >
+          Media
+        </Link>
+      </div>
+
+      {section === "content" ? (
+        <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
         <h2 className="text-xl font-semibold">Site Content ({locale.toUpperCase()})</h2>
         <p className="mt-1 text-xs text-[var(--muted)]">Switch locale by query string: `?locale=id` or `?locale=en`</p>
         <form action={saveSiteContent} className="mt-5 space-y-4">
@@ -91,9 +114,12 @@ export default async function AdminPage({ searchParams }: Props) {
 
           <button type="submit" className="rounded bg-[var(--brand-secondary)] px-4 py-2 text-sm font-medium text-white">Save Content</button>
         </form>
-      </section>
+        </section>
+      ) : null}
 
-      <section className="mt-8 rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
+      {section === "products" ? (
+        <>
+          <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
         <h2 className="text-xl font-semibold">Add / Update Product</h2>
         <form action={saveProduct} className="mt-5 space-y-4">
           <div className="grid gap-3 md:grid-cols-2">
@@ -125,18 +151,9 @@ export default async function AdminPage({ searchParams }: Props) {
           </div>
           <button type="submit" className="rounded bg-[var(--brand-secondary)] px-4 py-2 text-sm font-medium text-white">Save Product</button>
         </form>
-      </section>
+          </section>
 
-      <section className="mt-8 rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
-        <h2 className="text-xl font-semibold">Upload Product Image</h2>
-        <form action={uploadProductImage} className="mt-4 grid gap-3 md:grid-cols-3">
-          <label className="block text-sm">Product ID<input name="productId" required className="mt-1 w-full rounded border px-3 py-2" /></label>
-          <label className="block text-sm">Image File<input type="file" name="image" accept="image/*" required className="mt-1 w-full rounded border px-3 py-2" /></label>
-          <div className="flex items-end"><button type="submit" className="rounded bg-[var(--brand-secondary)] px-4 py-2 text-sm font-medium text-white">Upload & Attach</button></div>
-        </form>
-      </section>
-
-      <section className="mt-8 rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
+          <section className="mt-8 rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
         <h2 className="text-xl font-semibold">Existing Products</h2>
         <div className="mt-4 space-y-2">
           {products.map((product) => (
@@ -151,7 +168,20 @@ export default async function AdminPage({ searchParams }: Props) {
             </div>
           ))}
         </div>
-      </section>
+          </section>
+        </>
+      ) : null}
+
+      {section === "media" ? (
+        <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
+          <h2 className="text-xl font-semibold">Upload Product Image</h2>
+          <form action={uploadProductImage} className="mt-4 grid gap-3 md:grid-cols-3">
+            <label className="block text-sm">Product ID<input name="productId" required className="mt-1 w-full rounded border px-3 py-2" /></label>
+            <label className="block text-sm">Image File<input type="file" name="image" accept="image/*" required className="mt-1 w-full rounded border px-3 py-2" /></label>
+            <div className="flex items-end"><button type="submit" className="rounded bg-[var(--brand-secondary)] px-4 py-2 text-sm font-medium text-white">Upload & Attach</button></div>
+          </form>
+        </section>
+      ) : null}
     </main>
   );
 }

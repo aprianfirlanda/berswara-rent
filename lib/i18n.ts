@@ -27,9 +27,7 @@ type Dict = {
   footer: {
     tagline: string;
     quickLinks: string;
-    policies: string;
-    terms: string;
-    refund: string;
+    locationLabel: string;
     location: string;
   };
   common: {
@@ -53,9 +51,7 @@ export const dictionaries: Record<Locale, Dict> = {
     footer: {
       tagline: "Sewa perlengkapan bayi premium di Bandung, Jawa Barat.",
       quickLinks: "Tautan Cepat",
-      policies: "Kebijakan",
-      terms: "Syarat & Ketentuan",
-      refund: "Kebijakan Refund & Kerusakan",
+      locationLabel: "Lokasi",
       location: "Bandung, Jawa Barat",
     },
     common: {
@@ -77,9 +73,7 @@ export const dictionaries: Record<Locale, Dict> = {
     footer: {
       tagline: "Premium baby gear rental in Bandung, West Java.",
       quickLinks: "Quick Links",
-      policies: "Policies",
-      terms: "Terms of Service",
-      refund: "Refund & Damage Policy",
+      locationLabel: "Location",
       location: "Bandung, West Java",
     },
     common: {
