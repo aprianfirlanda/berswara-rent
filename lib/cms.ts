@@ -140,25 +140,42 @@ export const getDynamicProducts = cache(async (): Promise<Product[]> => {
     const { data, error } = await supabase.from("products").select("*").order("name", { ascending: true });
     if (error || !data?.length) return fallbackProducts;
 
-    return data.map((item) => ({
-      id: item.id,
-      name: item.name,
-      category: item.category,
-      brand: item.brand,
-      weeklyPrice: item.weekly_price,
-      monthlyPrice: item.monthly_price,
-      description: item.description,
-      features: item.features ?? [],
-      ageRange: item.age_range,
-      weightCapacity: item.weight_capacity,
-      dimensions: item.dimensions,
-      availability: item.availability,
-      featured: item.featured,
-      availabilityLastUpdated: item.availability_last_updated,
-      availabilityCalendar: item.availability_calendar ?? [],
-      photos: item.photos ?? [],
-      videos: item.videos ?? [],
-    })) as Product[];
+    return data.map((item) => {
+      const prices = Array.isArray(item.price_options)
+        ? item.price_options
+            .map((price: { label?: string; amount?: number }) => ({
+              label: String(price?.label ?? "").trim(),
+              amount: Number(price?.amount ?? 0),
+            }))
+            .filter((price: { label: string; amount: number }) => price.label && price.amount > 0)
+        : [];
+
+      const fallbackPrices = [
+        { label: "Weekly", amount: item.weekly_price },
+        { label: "Monthly", amount: item.monthly_price },
+      ].filter((price) => Number(price.amount) > 0);
+
+      return {
+        id: item.id,
+        name: item.name,
+        category: item.category,
+        brand: item.brand,
+        prices: prices.length ? prices : fallbackPrices,
+        weeklyPrice: item.weekly_price,
+        monthlyPrice: item.monthly_price,
+        description: item.description,
+        features: item.features ?? [],
+        ageRange: item.age_range,
+        weightCapacity: item.weight_capacity,
+        dimensions: item.dimensions,
+        availability: item.availability,
+        featured: item.featured,
+        availabilityLastUpdated: item.availability_last_updated,
+        availabilityCalendar: item.availability_calendar ?? [],
+        photos: item.photos ?? [],
+        videos: item.videos ?? [],
+      };
+    }) as Product[];
   } catch {
     return fallbackProducts;
   }

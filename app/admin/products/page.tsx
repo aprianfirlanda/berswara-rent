@@ -36,21 +36,46 @@ export default async function AdminProductsPage() {
 
       <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
         <h2 className="text-xl font-semibold">Products</h2>
-        <div className="mt-4 space-y-2">
-          {products.map((product) => (
-            <div key={product.id} className="flex flex-wrap items-center justify-between gap-3 rounded border px-3 py-2 text-sm">
-              <div>
-                <span className="font-medium">{product.name}</span> <span className="text-[var(--muted)]">({product.id})</span>
-              </div>
-              <div className="flex gap-2">
-                <Link href={`/admin/products/${product.id}/edit`} className="rounded border border-[var(--brand-soft)] px-3 py-1">Edit</Link>
-                <form action={deleteProduct}>
-                  <input type="hidden" name="id" value={product.id} />
-                  <button type="submit" className="rounded border border-red-200 px-3 py-1 text-red-700">Delete</button>
-                </form>
-              </div>
-            </div>
-          ))}
+        <div className="mt-4 overflow-x-auto">
+          <table className="min-w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-[var(--brand-soft)] text-left">
+                <th className="px-3 py-2 font-semibold">Name</th>
+                <th className="px-3 py-2 font-semibold">Category</th>
+                <th className="px-3 py-2 font-semibold">Primary Price</th>
+                <th className="px-3 py-2 font-semibold">Status</th>
+                <th className="px-3 py-2 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id} className="border-b border-[var(--brand-soft)]">
+                  <td className="px-3 py-2">
+                    <div className="font-medium">{product.name}</div>
+                    <div className="text-xs text-[var(--muted)]">{product.id}</div>
+                  </td>
+                  <td className="px-3 py-2">{product.category}</td>
+                  <td className="px-3 py-2">
+                    {product.prices[0] ? `${product.prices[0].label}: Rp ${product.prices[0].amount.toLocaleString("id-ID")}` : `Rp ${product.weeklyPrice.toLocaleString("id-ID")}`}
+                  </td>
+                  <td className="px-3 py-2">
+                    <span className={`rounded px-2 py-1 text-xs ${product.availability ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"}`}>
+                      {product.availability ? "Available" : "Limited"}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="flex gap-2">
+                      <Link href={`/admin/products/${product.id}/edit`} className="rounded border border-[var(--brand-soft)] px-3 py-1">Edit</Link>
+                      <form action={deleteProduct}>
+                        <input type="hidden" name="id" value={product.id} />
+                        <button type="submit" className="rounded border border-red-200 px-3 py-1 text-red-700">Delete</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
     </main>

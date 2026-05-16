@@ -28,8 +28,6 @@ export function AdminProductForm({ product, categoryOptions }: { product?: Produ
               </datalist>
             </label>
             <label className="block text-sm">Brand<input name="brand" defaultValue={product?.brand ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
-            <label className="block text-sm">Weekly Price<input type="number" name="weeklyPrice" defaultValue={product?.weeklyPrice ?? 0} className="mt-1 w-full rounded border px-3 py-2" /></label>
-            <label className="block text-sm">Monthly Price<input type="number" name="monthlyPrice" defaultValue={product?.monthlyPrice ?? 0} className="mt-1 w-full rounded border px-3 py-2" /></label>
             <label className="block text-sm">Age Range<input name="ageRange" defaultValue={product?.ageRange ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
             <label className="block text-sm">Weight Capacity<input name="weightCapacity" defaultValue={product?.weightCapacity ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
             <label className="block text-sm md:col-span-2">Dimensions<input name="dimensions" defaultValue={product?.dimensions ?? ""} className="mt-1 w-full rounded border px-3 py-2" /></label>
@@ -43,6 +41,10 @@ export function AdminProductForm({ product, categoryOptions }: { product?: Produ
           </div>
 
           <AdminProductRichFields
+            initialPrices={product?.prices ?? [
+              { label: "Weekly", amount: product?.weeklyPrice ?? 0 },
+              { label: "Monthly", amount: product?.monthlyPrice ?? 0 },
+            ]}
             initialPhotos={product?.photos ?? []}
             initialVideos={product?.videos ?? []}
             initialAvailability={product?.availabilityCalendar ?? []}

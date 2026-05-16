@@ -14,13 +14,38 @@ function buildDates(startDate: Date, totalDays: number): string[] {
   });
 }
 
+function expandRangeDates(start: string, end: string): string[] {
+  const startDate = new Date(`${start}T00:00:00`);
+  const endDate = new Date(`${end}T00:00:00`);
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return [];
+  if (endDate < startDate) return [];
+  const dates: string[] = [];
+  const cursor = new Date(startDate);
+  while (cursor <= endDate) {
+    dates.push(cursor.toISOString().slice(0, 10));
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return dates;
+}
+
 export function AvailabilityCalendar({ product, locale }: Props) {
   const isId = locale === "id";
   const today = new Date();
   const monthDates = buildDates(today, 28);
-  const bookedDates = new Set(
-    product.availabilityCalendar.filter((entry) => entry.status === "booked").map((entry) => entry.date),
-  );
+  const bookedDates = new Set<string>();
+
+  for (const entry of product.availabilityCalendar) {
+    if (entry.status !== "booked") continue;
+    if ("startDate" in entry && "endDate" in entry) {
+      for (const date of expandRangeDates(entry.startDate, entry.endDate)) {
+        bookedDates.add(date);
+      }
+      continue;
+    }
+    if ("date" in entry && entry.date) {
+      bookedDates.add(entry.date);
+    }
+  }
 
   return (
     <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-4">

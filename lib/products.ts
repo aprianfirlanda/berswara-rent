@@ -3,6 +3,10 @@ export type Product = {
   name: string;
   category: string;
   brand: string;
+  prices: Array<{
+    label: string;
+    amount: number;
+  }>;
   weeklyPrice: number;
   monthlyPrice: number;
   description: string;
@@ -36,6 +40,10 @@ export const products: Product[] = [
     name: "Bugaboo Butterfly",
     category: "strollers",
     brand: "Bugaboo",
+    prices: [
+      { label: "Weekly", amount: 250000 },
+      { label: "Monthly", amount: 800000 },
+    ],
     weeklyPrice: 250000,
     monthlyPrice: 800000,
     description:
@@ -64,6 +72,10 @@ export const products: Product[] = [
     name: "VTech Learning Walker",
     category: "push-walkers",
     brand: "VTech",
+    prices: [
+      { label: "Weekly", amount: 150000 },
+      { label: "Monthly", amount: 500000 },
+    ],
     weeklyPrice: 150000,
     monthlyPrice: 500000,
     description:
@@ -92,6 +104,10 @@ export const products: Product[] = [
     name: "Doona Liki Trike",
     category: "push-bikes",
     brand: "Doona",
+    prices: [
+      { label: "Weekly", amount: 280000 },
+      { label: "Monthly", amount: 900000 },
+    ],
     weeklyPrice: 280000,
     monthlyPrice: 900000,
     description:

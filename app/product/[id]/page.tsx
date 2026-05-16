@@ -67,8 +67,19 @@ export default async function ProductPage({ params }: Props) {
           </p>
           <table className="w-full overflow-hidden rounded border border-[var(--brand-soft)] text-sm">
             <tbody>
-              <tr className="border-b border-[var(--brand-soft)]"><td className="p-2">{isId ? "Mingguan" : "Weekly"}</td><td className="p-2 font-medium">{formatIdr(product.weeklyPrice)}</td></tr>
-              <tr><td className="p-2">{isId ? "Bulanan" : "Monthly"}</td><td className="p-2 font-medium">{formatIdr(product.monthlyPrice)}</td></tr>
+              {product.prices.length ? (
+                product.prices.map((price, index) => (
+                  <tr key={`${price.label}-${index}`} className={index < product.prices.length - 1 ? "border-b border-[var(--brand-soft)]" : ""}>
+                    <td className="p-2">{price.label}</td>
+                    <td className="p-2 font-medium">{formatIdr(price.amount)}</td>
+                  </tr>
+                ))
+              ) : (
+                <>
+                  <tr className="border-b border-[var(--brand-soft)]"><td className="p-2">{isId ? "Mingguan" : "Weekly"}</td><td className="p-2 font-medium">{formatIdr(product.weeklyPrice)}</td></tr>
+                  <tr><td className="p-2">{isId ? "Bulanan" : "Monthly"}</td><td className="p-2 font-medium">{formatIdr(product.monthlyPrice)}</td></tr>
+                </>
+              )}
             </tbody>
           </table>
           <p className="text-sm text-[var(--muted)]">{product.description}</p>

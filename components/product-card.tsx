@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/i18n";
 
 export function ProductCard({ product, locale }: { product: Product; locale: Locale }) {
   const isId = locale === "id";
+  const primaryPrice = product.prices[0] ?? { label: isId ? "Harga" : "Price", amount: product.weeklyPrice };
   return (
     <article className="overflow-hidden rounded-3xl border border-[var(--brand-soft)] bg-white shadow-sm">
       <Image
@@ -17,7 +18,9 @@ export function ProductCard({ product, locale }: { product: Product; locale: Loc
       <div className="space-y-3 p-4">
         <div className="inline-block rounded-full bg-[var(--brand-soft)] px-3 py-1 text-xs font-bold text-[var(--brand-secondary)]">{formatCategoryLabel(product.category)}</div>
         <h3 className="text-lg font-semibold text-[var(--brand-secondary)]">{product.name}</h3>
-        <p className="text-sm text-[var(--muted)]">{formatIdr(product.weeklyPrice)}/week</p>
+        <p className="text-sm text-[var(--muted)]">
+          {formatIdr(primaryPrice.amount)} / {primaryPrice.label}
+        </p>
         <p className={`text-xs font-medium ${product.availability ? "text-[var(--brand-secondary)]" : "text-[var(--brand-primary)]"}`}>
           {product.availability ? (isId ? "Tersedia" : "Available") : isId ? "Ketersediaan Terbatas" : "Limited Availability"}
         </p>

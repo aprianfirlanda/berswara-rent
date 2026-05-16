@@ -1,3 +1,4 @@
+-- INIT migration (fresh setup)
 -- Run this SQL in Supabase SQL editor.
 
 create table if not exists public.site_content (
@@ -13,6 +14,9 @@ create table if not exists public.products (
   name text not null,
   category text not null,
   brand text not null default '',
+  -- dynamic pricing
+  price_options jsonb not null default '[]'::jsonb,
+  -- backward-compat fields
   weekly_price integer not null default 0,
   monthly_price integer not null default 0,
   description text not null default '',
@@ -23,14 +27,13 @@ create table if not exists public.products (
   availability boolean not null default true,
   featured boolean not null default false,
   availability_last_updated date not null default current_date,
+  -- supports single/range objects
   availability_calendar jsonb not null default '[]'::jsonb,
   photos text[] not null default '{}',
   videos text[] not null default '{}',
   updated_at timestamptz not null default now(),
   created_at timestamptz not null default now()
 );
-
-alter table public.products drop constraint if exists products_category_check;
 
 alter table public.site_content enable row level security;
 alter table public.products enable row level security;

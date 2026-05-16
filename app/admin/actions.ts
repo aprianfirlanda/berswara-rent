@@ -121,11 +121,27 @@ export async function saveProduct(formData: FormData) {
 
   const photosJson = String(formData.get("photosJson") ?? "[]");
   const videosJson = String(formData.get("videosJson") ?? "[]");
+  const pricesJson = String(formData.get("pricesJson") ?? "[]");
   const availabilityCalendarJson = String(formData.get("availabilityCalendarJson") ?? "[]");
 
+  let prices: Array<{ label: string; amount: number }> = [];
   let photos: string[] = [];
   let videos: string[] = [];
-  let availabilityCalendar: Array<{ date: string; status: "available" | "booked" }> = [];
+  let availabilityCalendar: Array<
+    | { mode?: "single"; date: string; status: "available" | "booked" }
+    | { mode: "range"; startDate: string; endDate: string; status: "available" | "booked" }
+  > = [];
+
+  try {
+    const parsed = JSON.parse(pricesJson);
+    prices = Array.isArray(parsed)
+      ? parsed
+          .map((item) => ({ label: String(item?.label ?? "").trim(), amount: Number(item?.amount ?? 0) }))
+          .filter((item) => item.label && item.amount > 0)
+      : [];
+  } catch {
+    throw new Error("pricesJson must be valid JSON array");
+  }
 
   try {
     const parsed = JSON.parse(photosJson);
@@ -152,16 +168,35 @@ export async function saveProduct(formData: FormData) {
       ? parsed
           .map((item) => {
             const status: "available" | "booked" = item?.status === "booked" ? "booked" : "available";
+            const mode = item?.mode === "range" ? "range" : "single";
+            if (mode === "range") {
+              return {
+                mode: "range" as const,
+                startDate: String(item?.startDate ?? ""),
+                endDate: String(item?.endDate ?? ""),
+                status,
+              };
+            }
             return {
+              mode: "single" as const,
               date: String(item?.date ?? ""),
               status,
             };
           })
-          .filter((item) => item.date)
+          .filter((item) => ("date" in item ? item.date : item.startDate && item.endDate))
       : [];
   } catch {
     throw new Error("availabilityCalendarJson must be valid JSON array");
   }
+
+  const weeklyPrice =
+    prices.find((item) => item.label.toLowerCase() === "weekly")?.amount ??
+    prices[0]?.amount ??
+    Number(formData.get("weeklyPrice") ?? 0);
+  const monthlyPrice =
+    prices.find((item) => item.label.toLowerCase() === "monthly")?.amount ??
+    prices[1]?.amount ??
+    Number(formData.get("monthlyPrice") ?? 0);
 
   const { error } = await supabase.from("products").upsert(
     {
@@ -169,8 +204,9 @@ export async function saveProduct(formData: FormData) {
       name,
       category,
       brand: String(formData.get("brand") ?? ""),
-      weekly_price: Number(formData.get("weeklyPrice") ?? 0),
-      monthly_price: Number(formData.get("monthlyPrice") ?? 0),
+      weekly_price: weeklyPrice,
+      monthly_price: monthlyPrice,
+      price_options: prices,
       description: String(formData.get("description") ?? ""),
       features,
       age_range: String(formData.get("ageRange") ?? ""),
