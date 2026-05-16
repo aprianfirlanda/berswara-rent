@@ -46,9 +46,24 @@ export default async function AdminPage({ searchParams }: Props) {
         </div>
       </div>
 
+      <div className="mb-4 inline-flex rounded border border-[var(--brand-soft)] bg-white p-1 text-sm">
+        <Link
+          href="/admin?locale=id"
+          className={`rounded px-3 py-1 ${locale === "id" ? "bg-[var(--brand-secondary)] text-white" : "text-[var(--muted)]"}`}
+        >
+          Indonesia
+        </Link>
+        <Link
+          href="/admin?locale=en"
+          className={`rounded px-3 py-1 ${locale === "en" ? "bg-[var(--brand-secondary)] text-white" : "text-[var(--muted)]"}`}
+        >
+          English
+        </Link>
+      </div>
+
       <section className="rounded border border-[var(--brand-soft)] bg-[var(--surface)] p-5">
         <h2 className="text-xl font-semibold">Site Content ({locale.toUpperCase()})</h2>
-        <p className="mt-1 text-xs text-[var(--muted)]">Switch locale by query string: `?locale=id` or `?locale=en`</p>
+        <p className="mt-1 text-xs text-[var(--muted)]">Editing localized content for {locale === "id" ? "Indonesia" : "English"}.</p>
         <form action={saveSiteContent} className="mt-5 space-y-4">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" name="heroImage" value={content.heroImage} />
